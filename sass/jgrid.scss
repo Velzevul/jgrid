@@ -115,11 +115,14 @@
   // again, fallback for crappy IE8
   @for $i from 1 through $fallback {
     .fallback-#{$i} { @include justify-column($i,$fallback);}
+    .col-#{$i} { @include justify-column($i,$fallback);}
   }
 
   @for $i from 1 through $fallback {
     .fallback-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
     .fallback-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
+    .prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
+    .append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
   }
 
   .fallback-hidden {

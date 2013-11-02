@@ -21,19 +21,14 @@
   $column-padding: 1 * $font-size;
 
   // layout configuration:
-  // determines available breakpoints which will be calculated from given numbers
-  // set to false if breakpoint is not needed
-  // 6 12 and 18 are highly divisible numbers
-  // with 4em-1em settings they give pretty
-  // nice px breakpoints, suitable for modern screens
+  $default: 12; // default number of columns, also number of columns for a IE8 fallback
+
+  // next values determine breakpoints you will have.
+  // set to false if you do not want a breakpoint
   $mobile: 6;
   $tablet: 12;
   $desktop: 16;
   $large: 18;
-
-  // fallback configuration is used in IE8: it does not
-  // understand media queries, so there will be just an ordinary grid
-  $fallback: 12;
 
 
 // --- UTILITIES ---
@@ -86,11 +81,13 @@
   // normal grid: has fixed width
   .grid {
     @extend .grid-fluid;
-    max-width: grid-width($fallback); // IE8 fallback mode
+    max-width: grid-width($default); // default and IE8 fallback
 
     // since normal browsers will see this, they will have nice responsive mobile-first grid
-    @media only screen {
-      max-width: grid-width($mobile);
+    @if $mobile != false {
+      @media only screen {
+        max-width: grid-width($mobile);
+      }
     }
 
     @if $tablet != false {
@@ -112,17 +109,14 @@
     }
   }
 
-  // again, fallback for crappy IE8
-  @for $i from 1 through $fallback {
-    .fallback-#{$i} { @include justify-column($i,$fallback);}
-    .col-#{$i} { @include justify-column($i,$fallback);}
+  // default and fallback for crappy IE8
+  @for $i from 1 through $default {
+    .col-#{$i} { @include justify-column($i,$default);}
   }
 
-  @for $i from 1 through $fallback {
-    .fallback-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
-    .fallback-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
-    .prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
-    .append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
+  @for $i from 1 through $default {
+    .prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($default * $column-width + ($default - 1) * $column-gutter ); }
+    .append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($default * $column-width + ($default - 1) * $column-gutter ); }
   }
 
   .fallback-hidden {

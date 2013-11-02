@@ -134,12 +134,12 @@
         .mobile-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($mobile * $column-width + ($mobile - 1) * $column-gutter ); }
         .mobile-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($mobile * $column-width + ($mobile - 1) * $column-gutter ); }
       }
-    }
 
-    .mobile-hidden,     // hidden on mobile screens
-    .tablet-hidden,     // hidden on tablets & mobile screens
-    .desktop-hidden {   // hidden on desktops, tablets, & mobile screens
-      display:none;
+      .mobile-hidden,     // hidden on mobile screens
+      .tablet-hidden,     // hidden on tablets & mobile screens
+      .desktop-hidden {   // hidden on desktops, tablets, & mobile screens
+        display:none;
+      }
     }
   }
 

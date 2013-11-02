@@ -503,14 +503,14 @@
   .mobile-append-6 {
     margin-right: 105.88235%;
   }
-}
-/* line 141, ../sass/jgrid.scss */
-.mobile-hidden,
-.tablet-hidden,
-.desktop-hidden {
-  display: none;
-}
 
+  /* line 140, ../sass/jgrid.scss */
+  .mobile-hidden,
+  .tablet-hidden,
+  .desktop-hidden {
+    display: none;
+  }
+}
 @media only screen and (min-width: 888px) {
   /* line 149, ../sass/jgrid.scss */
   .tablet-1 {

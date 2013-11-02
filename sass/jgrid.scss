@@ -1,1 +1,186 @@
+// --- REQUIRED RESETS ---
 
+  // apply CSS3 box model
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+
+// --- DEFAULT FONT CONFIGURATIONS ---
+
+  // need them due to reset of both properties
+  // in parent container
+  $font-size: 16px;
+  $line-height: 30px;
+
+
+// --- GRID CONFIGURATION ---
+  // column fonfigurations
+  $column-width: 3 * $font-size;
+  $column-gutter: 1.5 * $font-size;
+  $column-padding: 1 * $font-size;
+
+  // layout configuration:
+  // determines available breakpoints which will be calculated from given numbers
+  // set to false if breakpoint is not needed
+  // 6 12 and 18 are highly divisible numbers
+  // with 4em-1em settings they give pretty
+  // nice px breakpoints, suitable for modern screens
+  $mobile: 6;
+  $tablet: 12;
+  $desktop: 16;
+  $large: 18;
+
+  // fallback configuration is used in IE8: it does not
+  // understand media queries, so there will be just an ordinary grid
+  $fallback: 12;
+
+
+// --- UTILITIES ---
+
+  // calculate max-width for grid
+  @function grid-width( $columns ){
+    @return $columns * $column-width + ($columns - 1) * $column-gutter + 2 * $column-gutter;
+  }
+
+  // media query for a breakpoint at a given amount of columns
+  @mixin breakpoint( $columns ){
+    @media only screen and (min-width:  grid-width($columns) ) {
+      @content;
+    }
+  }
+
+  @mixin justify-column( $width, $context ){
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    text-justify: auto;
+    font-size: $font-size;
+    line-height: $line-height;
+    margin-left:0;
+    margin-right:0;
+    padding-left: $column-padding;
+    padding-right: $column-padding;
+    width: 100% * ($width * $column-width + ($width - 1) * $column-gutter) / ($context * $column-width + ($context - 1) * $column-gutter );
+  }
+
+
+// --- GRID ---
+
+  // fluid type: no max-width, stretches to the whole space
+  .grid-fluid {
+    font-size: 0;
+    line-height: 0;
+    text-align: justify;
+    text-justify: distribute-all-lines; // for IE8
+    padding: 0 $column-gutter;
+    margin: 0 auto;
+
+    &:after {
+      content: '';
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+  // normal grid: has fixed width
+  .grid {
+    @extend .grid-fluid;
+    max-width: grid-width($fallback); // IE8 fallback mode
+
+    // since normal browsers will see this, they will have nice responsive mobile-first grid
+    @media only screen {
+      max-width: grid-width($mobile);
+    }
+
+    @if $tablet != false {
+      @include breakpoint($tablet){
+        max-width: grid-width($tablet);
+      }
+    }
+
+    @if $desktop != false {
+      @include breakpoint($desktop){
+        max-width: grid-width($desktop);
+      }
+    }
+
+    @if $large != false {
+      @include breakpoint($large){
+        max-width: grid-width($large);
+      }
+    }
+  }
+
+  // again, fallback for crappy IE8
+  @for $i from 1 through $fallback {
+    .fallback-#{$i} { @include justify-column($i,$fallback);}
+  }
+
+  @for $i from 1 through $fallback {
+    .fallback-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
+    .fallback-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($fallback * $column-width + ($fallback - 1) * $column-gutter ); }
+  }
+
+  .fallback-hidden {
+    display:none;
+  }
+
+  // mobile-first for normal browsers
+  @if $mobile != false {
+    @media only screen {
+      @for $i from 1 through $mobile {
+        .mobile-#{$i} { @include justify-column($i,$mobile); }
+      }
+
+      @for $i from 1 through $mobile {
+        .mobile-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($mobile * $column-width + ($mobile - 1) * $column-gutter ); }
+        .mobile-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($mobile * $column-width + ($mobile - 1) * $column-gutter ); }
+      }
+    }
+
+    .mobile-hidden,     // hidden on mobile screens
+    .tablet-hidden,     // hidden on tablets & mobile screens
+    .desktop-hidden {   // hidden on desktops, tablets, & mobile screens
+      display:none;
+    }
+  }
+
+  @if $tablet != false {
+    @include breakpoint($tablet) {
+      @for $i from 1 through $tablet {
+        .tablet-#{$i} { @include justify-column($i,$tablet); }
+      }
+      @for $i from 1 through $tablet {
+        .tablet-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($tablet * $column-width + ($tablet - 1) * $column-gutter ); }
+        .tablet-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($tablet * $column-width + ($tablet - 1) * $column-gutter ); }
+      }
+      .mobile-hidden {display:inline-block;}
+    }
+  }
+
+  @if $desktop != false {
+    @include breakpoint($desktop) {
+      @for $i from 1 through $desktop {
+        .desktop-#{$i} { @include justify-column($i,$desktop); }
+      }
+      @for $i from 1 through $desktop {
+        .desktop-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
+        .desktop-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
+      }
+      .tablet-hidden {display:inline-block;}
+    }
+  }
+
+  @if $large != false {
+    @include breakpoint($large) {
+      @for $i from 1 through $large {
+        .large-#{$i} { @include justify-column($i,$large); }
+      }
+      @for $i from 1 through $large {
+        .large-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($large * $column-width + ($large - 1) * $column-gutter ); }
+        .large-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($large * $column-width + ($large - 1) * $column-gutter ); }
+      }
+      .desktop-hidden {display:inline-block;}
+    }
+  }

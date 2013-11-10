@@ -21,17 +21,16 @@
   $column-padding: 1 * $font-size;
 
   // layout configuration:
-  $default: 12; // default number of columns, also number of columns for a IE8 fallback
+  $desktop: 12; // default number of columns, also number of columns for a IE8 fallback
 
   // next values determine breakpoints you will have.
   // set to false if you do not want a breakpoint
   $mobile: 6;
-  $tablet: 12;
-  $desktop: 16;
+  $tablet: 8;
   $large: 18;
 
 
-// --- UTILITIES ---
+// --- MIXINS ---
 
   // calculate max-width for grid
   @function grid-width( $columns ){
@@ -62,26 +61,21 @@
 
 // --- GRID ---
 
-  // fluid type: no max-width, stretches to the whole space
-  .grid-fluid {
+  // normal grid: has fixed width
+  .grid {
     font-size: 0;
     line-height: 0;
     text-align: justify;
     text-justify: distribute-all-lines; // for IE8
     padding: 0 $column-gutter;
     margin: 0 auto;
+    max-width: grid-width($desktop); // IE8 fallback
 
     &:after {
       content: '';
       display: inline-block;
       width: 100%;
     }
-  }
-
-  // normal grid: has fixed width
-  .grid {
-    @extend .grid-fluid;
-    max-width: grid-width($default); // default and IE8 fallback
 
     // since normal browsers will see this, they will have nice responsive mobile-first grid
     @if $mobile != false {
@@ -96,10 +90,8 @@
       }
     }
 
-    @if $desktop != false {
-      @include breakpoint($desktop){
-        max-width: grid-width($desktop);
-      }
+    @include breakpoint($desktop){
+      max-width: grid-width($desktop);
     }
 
     @if $large != false {
@@ -109,18 +101,23 @@
     }
   }
 
-  // default and fallback for crappy IE8
-  @for $i from 1 through $default {
-    .col-#{$i} { @include justify-column($i,$default);}
+  // fluid grid (withoug max-width restrictions)
+  .grid.fluid {
+    max-width: 100%;
   }
 
-  @for $i from 1 through $default {
-    .prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($default * $column-width + ($default - 1) * $column-gutter ); }
-    .append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($default * $column-width + ($default - 1) * $column-gutter ); }
+  // grid with no grid padding (1st column starts exactly where grid starts)
+  .grid.no-padding {
+    padding: 0;
   }
 
-  .fallback-hidden {
-    display:none;
+  // fallback for crappy IE8
+  @for $i from 1 through $desktop {
+    .col-#{$i} { @include justify-column($i,$desktop);}
+  }
+  @for $i from 1 through $desktop {
+    .prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
+    .append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
   }
 
   // mobile-first for normal browsers
@@ -134,12 +131,6 @@
         .mobile-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($mobile * $column-width + ($mobile - 1) * $column-gutter ); }
         .mobile-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($mobile * $column-width + ($mobile - 1) * $column-gutter ); }
       }
-
-      .mobile-hidden,     // hidden on mobile screens
-      .tablet-hidden,     // hidden on tablets & mobile screens
-      .desktop-hidden {   // hidden on desktops, tablets, & mobile screens
-        display:none;
-      }
     }
   }
 
@@ -152,20 +143,16 @@
         .tablet-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($tablet * $column-width + ($tablet - 1) * $column-gutter ); }
         .tablet-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($tablet * $column-width + ($tablet - 1) * $column-gutter ); }
       }
-      .mobile-hidden {display:inline-block;}
     }
   }
 
-  @if $desktop != false {
-    @include breakpoint($desktop) {
-      @for $i from 1 through $desktop {
-        .desktop-#{$i} { @include justify-column($i,$desktop); }
-      }
-      @for $i from 1 through $desktop {
-        .desktop-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
-        .desktop-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
-      }
-      .tablet-hidden {display:inline-block;}
+  @include breakpoint($desktop) {
+    @for $i from 1 through $desktop {
+      .col-#{$i} { @include justify-column($i,$desktop); }
+    }
+    @for $i from 1 through $desktop {
+      .prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
+      .append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($desktop * $column-width + ($desktop - 1) * $column-gutter ); }
     }
   }
 
@@ -178,6 +165,5 @@
         .large-prepend-#{$i} { margin-left:  100% * ($i * $column-width + $i * $column-gutter) / ($large * $column-width + ($large - 1) * $column-gutter ); }
         .large-append-#{$i} { margin-right: 100% * ($i * $column-width + $i * $column-gutter) / ($large * $column-width + ($large - 1) * $column-gutter ); }
       }
-      .desktop-hidden {display:inline-block;}
     }
   }

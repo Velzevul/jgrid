@@ -7,33 +7,48 @@
     <link rel="stylesheet" href="stylesheets/example.css">
 </head>
 <body>
+    <h1>Justify-based responsive grid framework</h1>
+
+    <h2>Basic grid</h2>
     <div class="grid">
-        <div class="col col-12 mobile-6 tablet-12 desktop-16 is-center-aligned">Justify-based responsive grid</div>
+        <div class="col col-12 mobile-6 is-center-aligned">col-12 mobile-6</div>
 
-        <div class="col col-6 mobile-3 tablet-6 desktop-8" style="height: 100px; vertical-align:middle;">1</div>
-        <div class="col col-6 mobile-3 tablet-6 desktop-8" style="vertical-align:middle;">2</div>
+        <div class="col col-4 mobile-6">col-4 mobile-6</div>
+        <div class="col col-4 mobile-6">col-4 mobile-6</div>
+        <div class="col col-4 mobile-6">col-4 mobile-6</div>
 
-        <div class="col col-4 mobile-2 tablet-4 desktop-5">3</div>
-        <div class="col col-4 prepend-4 append-4 mobile-2 mobile-prepend-2 mobile-append-2 tablet-4 desktop-5">4</div>
-        <div class="col col-4 prepend-8 mobile-2 mobile-prepend-4 tablet-4 desktop-5">5</div>
+        <div class="col col-3 mobile-3">col-3 mobile-3</div>
+        <div class="col col-3 mobile-3">col-3 mobile-3</div>
+        <div class="col col-3 mobile-3">col-3 mobile-3</div>
+        <div class="col col-3 mobile-3">col-3 mobile-3</div>
+    </div>
 
-        <div class="col col-3 mobile-hidden tablet-3 desktop-4">6</div>
-        <div class="col col-3 mobile-hidden tablet-3 tablet-prepend-3 tablet-append-6 desktop-4">7</div>
-        <div class="col col-3 mobile-hidden tablet-3 tablet-prepend-6 tablet-append-3 desktop-4">8</div>
-        <div class="col col-3 mobile-hidden tablet-3 tablet-prepend-9 desktop-4">9</div>
+    <h2>Basic grid, no grid padding</h2>
+    <div class="grid no-padding">
+        <div class="col col-12 is-center-aligned">col-12</div>
 
-        <div class="col fallback-hidden tablet-hidden desktop-3">10</div>
-        <div class="col fallback-hidden tablet-hidden desktop-3">11</div>
-        <div class="col fallback-hidden tablet-hidden desktop-3">12</div>
-        <div class="col fallback-hidden tablet-hidden desktop-3">13</div>
-        <div class="col fallback-hidden tablet-hidden desktop-3">14</div>
+        <div class="col col-4">col-4</div>
+        <div class="col col-4">col-4</div>
+        <div class="col col-4">col-4</div>
 
-        <div class="col fallback-hidden desktop-hidden large-3">15</div>
-        <div class="col fallback-hidden desktop-hidden large-3">16</div>
-        <div class="col fallback-hidden desktop-hidden large-3">17</div>
-        <div class="col fallback-hidden desktop-hidden large-3">18</div>
-        <div class="col fallback-hidden desktop-hidden large-3">19</div>
-        <div class="col fallback-hidden desktop-hidden large-3">20</div>
+        <div class="col col-3">col-3</div>
+        <div class="col col-3">col-3</div>
+        <div class="col col-3">col-3</div>
+        <div class="col col-3">col-3</div>
+    </div>
+
+    <h2>Basic grid, fluid</h2>
+    <div class="grid fluid">
+        <div class="col col-12 is-center-aligned">col-12</div>
+
+        <div class="col col-4">col-4</div>
+        <div class="col col-4">col-4</div>
+        <div class="col col-4">col-4</div>
+
+        <div class="col col-3">col-3</div>
+        <div class="col col-3">col-3</div>
+        <div class="col col-3">col-3</div>
+        <div class="col col-3">col-3</div>
     </div>
 </body>
 </html>
